@@ -1,0 +1,15 @@
+# this program defines whether entered number is Armstrong number or not.
+  puts 'Enter your number. It should be 3 digits'
+  number = gets.chomp
+  while number.size !=3 do
+    puts "It should be 3 digits!"
+    number = gets.chomp
+  end
+  convert_to_array = number.to_s.split('').map {|x| x.to_i}
+  sum = convert_to_array.map! {|y| y**=number.length}
+  armstrong_number = sum.inject {|all,z| all + z}
+  if armstrong_number.to_s.eql? number.to_s
+    puts "You entered #{number} and armstron number is #{armstrong_number} Yes! This is armstrong number 1"
+  else
+    puts "You entered #{number} and armstron number is #{armstrong_number} No this is not armstrong number"
+  end

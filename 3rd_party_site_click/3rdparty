@@ -1,0 +1,58 @@
+require "rubygems"
+require "selenium-webdriver"
+require "test/unit"
+
+landing_users = 1
+product_users = 1
+dealer_users = 1
+locate_users = 1
+select_users = 1
+
+element_id_filename = "/Users/biercoff/Downloads/element_id.csv"
+user_agent_filename = "/Users/biercoff/Dropbox/Work/mGage/MGage Anyone/user_agents.csv"
+
+def read_from_file (file)
+main = []
+file = File.new(file, 'r')
+  file.each_line("\n") do |row|
+   columns = row.split(",")
+    main <<  columns[1]
+  end
+main.delete_at(0)
+main
+  end
+
+
+count = 1
+    while count.between?(1,2)
+      element_id_array = read_from_file(element_id_filename)
+      element_id = element_id_array[rand(element_id_array.size)]
+      user_agents_array = read_from_file(user_agent_filename)
+      user_agent = user_agents_array[rand(user_agents_array.size)]
+      profile = Selenium::WebDriver::Firefox::Profile.new
+      profile['general.useragent.override'] = "#{user_agent}"
+      @driver = Selenium::WebDriver.for :firefox, :profile => profile
+      @driver.manage.timeouts.implicit_wait = 30
+      @verification_errors = []
+      @driver.get "http://qa01-mgage.cogniance.com/micro3/microsite_index.html?planid=#{element_id}"
+      @driver.find_element(:id, "ms_l").click
+        if (dealer_users > 0)
+            @driver.find_element(:id, "ms_d").click
+            dealer_users -= 1
+          if (locate_users > 0 )
+            @driver.find_element(:id, "dealer_locate").click
+            locate_users -= 1
+          end
+        else if (product_users > 0)
+          @driver.find_element(:id, "ms_p").click
+            dealer_users -= 1
+          if (select_users > 0 )
+            @driver.find_element(:id, "product_select").click
+            select_users -= 1
+          end
+             end
+        end
+    count += 1
+    @driver.quit
+    end
+

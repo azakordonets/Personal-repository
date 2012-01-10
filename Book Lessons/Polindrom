@@ -1,0 +1,31 @@
+# program that defines number of polindrom words in the sentence
+
+def palindrome_check (sentence)
+  pol_counter = 0
+  i = 0
+  while i.between?(0,sentence.length)
+    reversed = sentence[i].to_s.reverse
+    if sentence[i] == reversed
+      pol_counter = pol_counter + 1
+    end
+    i +=1
+  end
+  puts "Here's what i got #{sentence}'"
+  puts "Number of palindrom words is #{pol_counter}"
+end
+sentence = ''
+while sentence != 'Exit'
+  puts "Enter word or sentence"
+   sentence = gets.chomp
+  if sentence == "Exit"
+   puts 'Thanks and good bye'
+   else
+     sentence_array = sentence.split(' ')
+     i = 0
+        while i.between?(0,sentence_array.length)
+          sentence_array[i].to_s.gsub!(/[^0-9A-Za-z]/, '')
+          i +=1
+        end
+    palindrome_check(sentence_array)
+  end
+ end

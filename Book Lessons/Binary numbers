@@ -1,0 +1,23 @@
+# function that moves number from decimal to binary form. but .to_s(2) method is way better.
+ #puts "Enter number"
+ #number = gets.chomp
+ #for i=0 to number
+  # puts
+ #end
+
+ ## Function to convert a given integer string/number into binary formatted string
+def dec2bin(number)
+   number = Integer(number)
+   return 0 if (number == 0)
+   ret_bin = ""
+   ## Untill val is zero, convert it into binary format
+   while(number != 0)
+      ret_bin = String(number % 2) + ret_bin
+      number = number / 2
+   end
+   return ret_bin
+end
+(1..512).each do |i|
+puts dec2bin(i)
+  i+=1
+end

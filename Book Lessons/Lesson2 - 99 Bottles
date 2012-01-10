@@ -1,0 +1,35 @@
+# program that runs 99 bottles of rom poem
+number_of_bottles = 99
+ka_suffix = 'ка'
+ki_suffix = 'ки'
+ok_suffix = 'ок'
+ if number_of_bottles >= 10 and number_of_bottles<=20
+        suffix = ok_suffix
+    else
+        case number_of_bottles%10
+          when 1 then suffix = ka_suffix
+          when 2..4 then suffix = ki_suffix
+        else
+          suffix = ok_suffix
+        end
+    end
+
+while number_of_bottles>0 do
+  puts '' +number_of_bottles.to_s+ ' бутыл'+suffix+' пива на стене'
+  puts ''+number_of_bottles.to_s+' бутыл'+suffix+' пива!'
+  puts 'Возьми одну, пусти по кругу'
+  number_of_bottles -=1
+  if number_of_bottles >= 10 and number_of_bottles<=20
+          suffix = ok_suffix
+    else
+          case number_of_bottles%10
+            when 1 then suffix = ka_suffix
+            when 2..4 then suffix = ki_suffix
+          else
+            suffix = ok_suffix
+          end
+  end
+    puts "#{number_of_bottles} бутыл"+suffix+" пива на стене!"
+
+end
+puts 'End'

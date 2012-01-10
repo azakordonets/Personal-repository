@@ -1,0 +1,2 @@
+num =
+puts num.to_s(2)

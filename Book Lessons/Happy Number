@@ -1,0 +1,25 @@
+# progream that defines whether entered number is lucky or not
+puts "Enter 6 digits number"
+number = 0
+while number.size != 6 do
+  puts "it should contain 6 digits"
+  number = gets.chomp
+end
+array = number.split('').to_a
+  i=0
+  first_3 = 0
+  second_3 = 0
+  while i.between?(0,2) do
+  first_3 = first_3 + array[i].to_i
+  i += 1
+  end
+while i.between?(2,5) do
+  second_3 = second_3 + array[i].to_i
+  i += 1
+  end
+puts "First sum #{first_3} Second sum #{second_3}"
+    if first_3.eql? second_3
+      puts "Happy Number"
+    else
+      puts "Not Happy Number"
+    end

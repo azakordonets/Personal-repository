@@ -1,0 +1,35 @@
+# this program defines whether entered number in binary mode lucky or not
+def make_binary (number)
+number = number.to_i.to_s(2)
+array = number.split('')
+divider = array.length.to_i
+first_part = 0
+second_part = 0
+i=0
+y=0
+  while i.between?(0,divider.divmod(2)[0]) and y.between?(1,divider.divmod(2)[0]) do
+  first_part = first_part + array[i].to_i
+  second_part = second_part + array[-y].to_i
+  puts "First part - #{first_part} Array element - #{array[i].to_s}"
+  puts "Second part - #{second_part} Array element - #{array[-i].to_s}"
+  i+= 1
+  end
+puts "Array - #{array.to_s} First part = #{first_part} Second part = #{second_part}"
+  return first_part, second_part
+end
+def compare (first_part,second_part)
+    if first_part == second_part
+      puts "You've entered #{number}. In binary system it looks like this : #{binary} . This number is lucky"
+      else
+      puts "You've entered #{number}. In binary system it looks like this : #{binary} . This number is not lucky"
+    end
+
+end
+puts "Hello! Please enter your number. It should be more then 0 and less then 512"
+word = gets.chomp
+if  word == 'Exit'
+  puts 'Thanks and good bye'
+  else
+make_binary(word)
+
+end

@@ -1,0 +1,68 @@
+require 'rubygems'
+require 'vertica'
+def vertica_event_request(campaign_id, element_id)
+  vertica = Vertica.connect({
+  :user     => 'insight_qa',
+  :password => 'insightQA$',
+  :host     => 'vertica841qa.veltimgage.com',
+  :port     => '5433',
+  :database => 'vltusdwhq841_01'
+})
+
+result = vertica.query("SELECT
+sum(fact_event.event_count) AS event_count,
+dim_event.event_name AS event_name,
+ fact_event.date_time,
+--#groupDate fact_event.date,
+fact_event.ref_element_id AS ad_element_id,
+di_mweb_pages_d.page_element_id AS element_id
+
+FROM
+DWH_8_3_2.fact_event,
+DWH_8_3_2.dim_event,
+DWH_8_3_2.di_mweb_pages_d
+
+WHERE
+ fact_event.campaign_id = #{campaign_id} AND
+ di_mweb_pages_d.page_element_id IN ('#{element_id}')  and
+fact_event.event_id = dim_event.event_id AND
+fact_event.page_id = di_mweb_pages_d.page_id AND
+fact_event.site_id = di_mweb_pages_d.site_id AND
+fact_event.date_time between
+ '2010-01-01 09:06:36'
+ AND '2012-01-06 09:06:36'
+
+GROUP BY
+dim_event.event_name,
+ fact_event.date_time,
+--#groupDate fact_event.date,
+fact_event.ref_element_id,
+di_mweb_pages_d.page_element_id")
+
+vertica.close
+result_array = []
+result.each_row {|row|
+row.each {|key, value| puts "#{key} = #{value}" }
+row.each {|row_s| result_array << row_s}
+vertica.close    }
+result_array.flatten!
+i = 0
+eventCount = 0
+
+
+  while i.between?(0,result_array.length)
+  if result_array[i].to_s.include?("event_name")
+    event_count_dec = BigDecimal.new(result_array[i-1].to_s)
+    eventCount += event_count_dec.to_i
+    i += 1
+    puts eventCount
+  else
+    i += 1
+  end
+  end
+  puts "Event count = #{eventCount.to_i}"
+
+
+end
+
+vertica_event_result =  vertica_event_request(3258,'3258-11011I')

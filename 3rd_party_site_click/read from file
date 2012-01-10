@@ -1,0 +1,40 @@
+require 'rubygems'
+require 'fastercsv'
+
+filename = "/Users/biercoff/Dropbox/Work/mGage/MGage Anyone/user_agents.csv"
+
+class Website
+attr_accessor :filename
+
+  def initialize (file )
+    @filename = file
+  end
+
+  def self.read_from_file (file)
+main = []
+file = File.new(file, 'r')
+  file.each_line("\n") do |row|
+   columns = row.split(",")
+    main <<  columns[1]
+  end
+main.delete_at(0)
+main
+  end
+
+end
+
+element_id_array = Website.read_from_file(filename)
+puts element_id_array
+
+puts "\n"
+
+puts element_id = element_id_array[rand(element_id_array.size)]
+
+
+
+
+wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+      wait.until { @driver.find_element(:css, "img[alt=\"Яндекс\"]")}
+
+
+
