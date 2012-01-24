@@ -5,17 +5,6 @@ require "test/unit"
 
 class Base < Test::Unit::TestCase
 
-#attr_accessor :driver, :base_url
-#
-#def initialize(driver,base_url)
-#   @driver = driver
-#   @base_url = base_url
-#  # @driver =  Selenium::WebDriver.for :firefox
-#  # @base_url = "http://dev.homemoney.com.ua/"
-#end
-
-
-
 def self.idClick (id)
     @driver.find_element(:id, id).click
 end

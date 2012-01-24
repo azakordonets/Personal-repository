@@ -14,8 +14,10 @@ class Home_page_links < Base
     @verification_errors = []
   end
 
-  # Called after every test method runs. Can be used to tear
-  # down fixture information.
+  def teardown
+    @driver.quit
+    assert_equal [], @verification_errors
+  end
 
   def test_login
     Base.goTo("/#")
@@ -28,10 +30,4 @@ class Home_page_links < Base
 
   end
 
-  # Fake test
-  def test_fail
-
-    # To change this template use File | Settings | File Templates.
-    fail("Not implemented")
-  end
 end
