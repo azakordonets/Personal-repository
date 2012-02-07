@@ -1,0 +1,10 @@
+require 'rubygems'
+
+permissions_file_path = ""
+def self.read_from_file (file)
+file = File.new(file, 'r')
+  file.each_line("\n") do |row|
+   columns = row.split(",")
+    main <<  columns[1]
+  end
+end
