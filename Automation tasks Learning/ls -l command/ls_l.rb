@@ -30,6 +30,53 @@ class Files_Ops
     name.rstrip!
     name
   end
+
+  def self.octal_to_letters (number)  # transfer file permission from octal to letters form (human readable)
+      case number
+           when "6"
+      human_read = "rw-"
+           when "3"
+      human_read = "-wx"
+           when "1"
+      human_read = "--x"
+           when "2"
+      human_read = "-w-"
+           when "4"
+      human_read = "r--"
+           end
+      human_read
+  end
+
+   def self.determine_file_type (type)  # determines file or directory type and adds correspond symbol into the end of file permission line
+      case type
+           when "file"
+      human_read = "-"
+           when "directory"
+      human_read = "d"
+           when "pipe"
+      human_read = "p"
+           when "socket"
+      human_read = "s"
+           when "link"
+      human_read = "l"
+           end
+      human_read
+    end
+
+
+def self.permission_from_dec_to_octal (permission_id) # transform permission_id from decimal into letters form
+  human_array = []
+  octal = permission_id.to_s 8
+  array = octal.to_s.split('')
+  final_array = array[-3,3]
+   i = 0
+  while i.between?(0,2)
+  human_array << octal_to_letters(final_array[i])
+    i += 1
+  end
+  human_array.to_s
+end
+
   def self.date_array(files_array) # creates an array of time stamps for each file
    files_array.flatten!
    date_array = []
@@ -61,19 +108,26 @@ class Files_Ops
    size = File.stat(filename).size
   end
 
+  def self.number_of_links(filename)
+  number_of_links =  File.stat(filename).nlink
+  number_of_links.to_s
+  end
+
 end
 
 folderFilesArray = Files_Ops.get_files_array(files_path)
+number_of_files_in_dir = Dir.open(files_path).collect.length-2
+count = 0
+while count.between?(0,number_of_files_in_dir-1)
+date = Files_Ops.date_array(folderFilesArray).to_s
+filename =  Files_Ops.filename(folderFilesArray[count]).to_s
+owner_name = Files_Ops.get_owner_name(folderFilesArray[count]).to_s
+group_name =  Files_Ops.get_group_name(folderFilesArray[count]).to_s
+file_size = Files_Ops.get_file_size(folderFilesArray[count]).to_s
+permission =  "#{Files_Ops.determine_file_type(File.stat(folderFilesArray[count]).ftype)}#{Files_Ops.permission_from_dec_to_octal(File.stat(folderFilesArray[count]).mode)}"
+number_of_links =  Files_Ops.number_of_links(folderFilesArray[count])
+puts "#{permission} #{number_of_links} #{owner_name} #{group_name} #{file_size} #{date} #{filename} "
+count += 1
+end
 
-puts Files_Ops.date_array(folderFilesArray)
-puts Files_Ops.filename(folderFilesArray[0])
-puts mode = File.stat(folderFilesArray[0]).mode
-puts mode.to_i[8]
-puts Files_Ops.get_owner_name(folderFilesArray[0])
-puts Files_Ops.get_group_name(folderFilesArray[0])
-puts Files_Ops.get_file_size(folderFilesArray[0])
-
-
-
-#puts b
 

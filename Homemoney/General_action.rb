@@ -3,7 +3,18 @@ require "selenium-webdriver"
 require "test/unit"
 
 
-class Base < Test::Unit::TestCase
+module Base
+class Utils < Test::Unit::TestCase
+
+  def initialize (driver, base_url)
+  @driver = driver
+  @base_url = base_url
+end
+
+def setup
+    @driver = Selenium::WebDriver.for :firefox
+    @base_url = "http://dev.homemoney.com.ua/"
+  end
 
 def self.idClick (id)
     @driver.find_element(:id, id).click
@@ -22,7 +33,9 @@ def self.xpathClick (xpath)
 end
 
 def self.goTo (url_add)
-    @driver.get(@base_url + url_add)
+    @driver = Selenium::WebDriver.for :firefox
+    @base_url = "http://dev.homemoney.com.ua/"
+    @driver.get(@base_url)
 end
 
 def self.getTitle (title)
@@ -37,10 +50,21 @@ end
 def self.sendKeys (element_id,key_to_send)
     @driver.find_element(:id, element_id).send_keys key_to_send
 end
-  end
+
+def self.logout ()
+    @driver.find_element(:id, "ctl00_ctl00_Top_LV2_LoginStatus2").click
+end
 
 
 
+def teardown
+    @driver.quit
+    assert_equal [], @verification_errors
+end
+
+end
+
+end
 
 #@driver.find_element(:id, "login-nav-signin").click
 #    @driver.find_element(:id, "ctl00_Main_rl1_hmLogin_login").clear
@@ -75,3 +99,4 @@ end
 #    @driver.find_element(:link, "Twitter").click
 #    @driver.find_element(:link, "Facebook").click
 #    @driver.find_element(:link, "В Контакте").click
+#    @driver.find_element(:id, "ctl00_ctl00_Top_LV2_LoginStatus2").click

@@ -1,70 +1,71 @@
-require 'rubygems'
-require 'vertica'
+require "rubygems"
+require "selenium-webdriver"
+require "test/unit"
 
-def vertica_event_request(campaign_id, element_id)
-vertica = Vertica.connect({
-  :user     => 'insight_qa',
-  :password => 'insightQA$',
-  :host     => 'vertica841qa.veltimgage.com',
-  :port     => '5433',
-  :database => 'vltusdwhq841_01'
-})
+landing_users = 15
+product_users = 80
+dealer_users = 80
+locate_users = 70
+select_users = 80
 
-result = vertica.query("SELECT
-sum(fact_event.event_count) AS event_count,
-dim_event.event_name AS event_name,
- fact_event.date_time,
---#groupDate fact_event.date,
-fact_event.ref_element_id AS ad_element_id,
-di_mweb_pages_d.page_element_id AS element_id
-FROM
-DWH_8_3_2.fact_event,
-DWH_8_3_2.dim_event,
-DWH_8_3_2.di_mweb_pages_d
-WHERE
- fact_event.campaign_id = #{campaign_id} AND
- di_mweb_pages_d.page_element_id IN ('#{element_id}')  and
-fact_event.event_id = dim_event.event_id AND
-fact_event.page_id = di_mweb_pages_d.page_id AND
-fact_event.site_id = di_mweb_pages_d.site_id AND
-fact_event.date_time between
- '2010-01-01 09:06:36'
- AND '2012-01-06 09:06:36'
-GROUP BY
-dim_event.event_name,
- fact_event.date_time,
---#groupDate fact_event.date,
-fact_event.ref_element_id,
-di_mweb_pages_d.page_element_id")
+element_id_filename = "/Users/biercoff/Downloads/element_id.csv"
+user_agent_filename = "/Users/biercoff/Dropbox/Work/mGage/MGage Anyone/user_agents.csv"
 
-def array_convert(name)
- name.flatten!
-name.map!{|x|x.to_i}
-end
-
-  eventCount = []
-  eventName = []
-  eventArray = []
-  result.each_row {|row|
-  row_hash_number=Hash.new
-  row_hash_name = Hash.new
-  row.each {|key,value|
-  row_hash_number.store(key.to_s,BigDecimal.new(value.to_s))
-  row_hash_name.store(key.to_s,value.to_s) }
-  eventCount << row_hash_number.values_at("event_count")
-  eventName << row_hash_name.values_at("event_name")}
-  eventCount.flatten!
-  eventCount.map!{|x| x = x.to_i}
-  i = 0
-  puts "Name  Count"
-  while i.between?(0,eventName.size)
-  puts "#{eventName[i]} - #{eventCount[i]}"
-    i += 1
+def read_from_file (file)
+main = []
+file = File.new(file, 'r')
+  file.each_line("\n") do |row|
+   columns = row.split(",")
+    main <<  columns[1]
   end
-  puts "Total Event number = #{array_convert(eventCount).inject{|sum,x| sum + x}}"
+main.delete_at(0)
+main
+  end
 
-end
 
-#vertica_page_result =  vertica_page_request(3258,'3258-11011I')
-   #puts "and now events \n"
-vertica_event_result =  vertica_event_request(3258,'3258-11011I')
+external_count = 0
+element_id_array_count = 0
+element_id_array = read_from_file(element_id_filename)
+  while external_count.between?(0,landing_users)
+    if element_id_array_count >= element_id_array.size
+      element_id_array_count = 0
+      element_id = element_id_array[element_id_array_count]
+      element_id_array_count += 1
+      external_count += 1
+  else
+    element_id = element_id_array[element_id_array_count]
+    element_id_array_count += 1
+  end
+    user_agents_array = read_from_file(user_agent_filename)
+    user_agent = user_agents_array[rand(user_agents_array.size)]
+    profile = Selenium::WebDriver::Firefox::Profile.new
+    profile['general.useragent.override'] = "#{user_agent}"
+    #@driver = Selenium::WebDriver.for :firefox, :profile => profile
+    #@driver.manage.timeouts.implicit_wait = 30
+    #@verification_errors = []
+    puts element_id
+    #@driver.get "http://biercoff.local/~biercoff/wednesday-micro/microsite_index.html?planid=#{element_id}"
+    #@driver.find_element(:id, "ms_l").click
+    #  if (dealer_users > 0)
+    #      @driver.find_element(:id, "ms_d").click
+    #       dealer_users -= 1
+    #     if (locate_users > 0 )
+    #       @driver.find_element(:id, "dealer_locate").click
+    #       locate_users -= 1
+    #     end
+    #   else if (product_users > 0)
+    #     @driver.find_element(:id, "ms_p").click
+    #       dealer_users -= 1
+    #     if (select_users > 0 )
+    #       @driver.find_element(:id, "product_select").click
+    #       select_users -= 1
+    #     end
+    #        end
+    #  end
+    external_count += 1
+    #@driver.quit
+    end
+
+
+
+

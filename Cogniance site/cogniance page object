@@ -1,0 +1,33 @@
+require "rubygems"
+require "selenium-webdriver"
+require "test/unit"
+
+Class Home
+
+def self.getHome("URL")
+  @driver.get URL
+end
+
+
+
+    @driver.find_element(:css, "li.company > a > span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[2]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[3]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[4]/a/span").click
+    @driver.find_element(:css, "li.expertise > a > span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[2]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[3]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[4]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[5]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[6]/a/span").click
+    @driver.find_element(:xpath, "//li[7]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[8]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[8]/a/span").click
+    @driver.find_element(:css, "li.clients > a > span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[2]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[3]/a/span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[4]/a/span").click
+    @driver.find_element(:css, "li.news > a > span").click
+    @driver.find_element(:css, "li.careers > a > span").click
+    @driver.find_element(:xpath, "//div[2]/div/div/ul/li[2]/a/span").click
+  end

@@ -1,10 +1,19 @@
 require 'rubygems'
 
-permissions_file_path = ""
-def self.read_from_file (file)
+permissions_file_path = "permissions_codes.csv"
+def read_from_file (file,permission_id)
+  main = []
 file = File.new(file, 'r')
   file.each_line("\n") do |row|
-   columns = row.split(",")
+    columns = row.split(",")
+    if permission_id.to_s == columns[0]
     main <<  columns[1]
+    else
+      main
+    end
+    main
   end
+  main
 end
+
+puts a = read_from_file(permissions_file_path,644)
