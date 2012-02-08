@@ -4,10 +4,10 @@ require "etc"
 
 files_path = "/Users/biercoff/Dropbox/Work/mGage/Bugs screenshots/04.01.2012"
 class Files_Ops
-  attr_accessor :filename
+  attr_accessor :filepath
 
   def initialize (filepath)
-    @filename = filepath
+    @filepath = filepath
   end
 
   def self.drop_array(array) #delete first two invisible files "." and ".."
@@ -113,21 +113,39 @@ end
   number_of_links.to_s
   end
 
+  def show_result
+  folderFilesArray = Files_Ops.get_files_array(@filepath)
+  number_of_files_in_dir = Dir.open(@filepath).collect.length-2
+  count = 0
+    while count.between?(0,number_of_files_in_dir-1)
+      date = Files_Ops.date_array(folderFilesArray).to_s
+      filename =  Files_Ops.filename(folderFilesArray[count]).to_s
+      owner_name = Files_Ops.get_owner_name(folderFilesArray[count]).to_s
+      group_name =  Files_Ops.get_group_name(folderFilesArray[count]).to_s
+      file_size = Files_Ops.get_file_size(folderFilesArray[count]).to_s
+      permission =  "#{Files_Ops.determine_file_type(File.stat(folderFilesArray[count]).ftype)}#{Files_Ops.permission_from_dec_to_octal(File.stat(folderFilesArray[count]).mode)}"
+      number_of_links =  Files_Ops.number_of_links(folderFilesArray[count])
+      puts "#{permission} #{number_of_links} #{owner_name} #{group_name} #{file_size} #{date} #{filename} "
+      count += 1
+    end
+  end
 end
 
-folderFilesArray = Files_Ops.get_files_array(files_path)
-number_of_files_in_dir = Dir.open(files_path).collect.length-2
-count = 0
-while count.between?(0,number_of_files_in_dir-1)
-date = Files_Ops.date_array(folderFilesArray).to_s
-filename =  Files_Ops.filename(folderFilesArray[count]).to_s
-owner_name = Files_Ops.get_owner_name(folderFilesArray[count]).to_s
-group_name =  Files_Ops.get_group_name(folderFilesArray[count]).to_s
-file_size = Files_Ops.get_file_size(folderFilesArray[count]).to_s
-permission =  "#{Files_Ops.determine_file_type(File.stat(folderFilesArray[count]).ftype)}#{Files_Ops.permission_from_dec_to_octal(File.stat(folderFilesArray[count]).mode)}"
-number_of_links =  Files_Ops.number_of_links(folderFilesArray[count])
-puts "#{permission} #{number_of_links} #{owner_name} #{group_name} #{file_size} #{date} #{filename} "
-count += 1
+
+puts "Hello, this program imitates unix ls -l command. Enter ls -l"
+location = gets.chomp
+while location != "exit"
+if location == "ls -l"
+result = Files_Ops.new("/Users/biercoff/Dropbox/Work/mGage/Bugs screenshots/04.01.2012")
+result.show_result
+puts "Enter ls -l. To finish program type 'exit' "
+location =  gets.chomp
+else
+puts "Enter ls -l. To finish program type 'exit' "
+location = gets.chomp
 end
+end
+
+
 
 
