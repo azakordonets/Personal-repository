@@ -2,7 +2,7 @@ require "rubygems"
 require "date"
 require "etc"
 
-files_path = "/Users/biercoff/Dropbox/Work/mGage/Bugs screenshots/04.01.2012"
+#files_path = "/Users/biercoff/Dropbox/Work/mGage/Bugs screenshots/04.01.2012"
 class Files_Ops
   attr_accessor :filepath
 
