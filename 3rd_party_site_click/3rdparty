@@ -43,7 +43,7 @@ element_id_array = read_from_file(element_id_filename)
     @driver = Selenium::WebDriver.for :firefox, :profile => profile
     @driver.manage.timeouts.implicit_wait = 30
     @verification_errors = []
-    @driver.get "http://biercoff.local/~biercoff/awen-pilot/microsite_index.html?planid=#{element_id}"
+    @driver.get "awenhttp://biercoff.local/~biercoff/-pilot/microsite_index.html?planid=#{element_id}"
     @driver.find_element(:id, "ms_l").click
       if (dealer_users > 0)
           @driver.find_element(:id, "ms_d").click
