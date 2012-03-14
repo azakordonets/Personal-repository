@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="lib/mobclix.jar"/>
+	<classpathentry kind="lib" path="/Users/biercoff/Work/Repository/Personal-repository/MobclixDemo/robotium-solo-3.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -5,6 +5,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/MobclixDemo"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry exported="true" kind="lib" path="/Users/biercoff/Dropbox/Work/Workspace/robotium-solo-3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/biercoff/Work/Repository/Personal-repository/MobclixDemoTest/robotium-solo-3.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
