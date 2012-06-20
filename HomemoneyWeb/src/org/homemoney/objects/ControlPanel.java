@@ -49,6 +49,37 @@ protected List<String> getAccountDetails(String AccName) {
 		
 		return AccountBalance;	
 }
+	
+	public WebElement getAccountCategoryElement (String name){
+		List<WebElement> allCategories = driver.findElements(By.cssSelector(".account-group-title h3"));// list of all categories		
+		WebElement result = null;
+		for (WebElement el: allCategories){
+			if (el.getText().equals(name)){ 
+				result = el;
+				break;
+				}
+			}
+		return result;
+	}
+	
+	protected void clickTodaysTransactiosnTab(){
+		clickByCss("a[rel=\"byDate\"]");
+	}
+	
+	protected void clickLastChangedTab(){
+		clickByCss("a[rel=\"last\"]");
+	}
+	
+	protected void clickPlannedTab(){
+		clickByCss("a[rel=\"plan\"]");
+	}
+	
+	protected void clickTemplatesTab(){
+		clickByCss("a[rel=\"template\"]");
+	}
+	
+	
+	
 	}
 	
 

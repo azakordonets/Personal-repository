@@ -52,14 +52,14 @@ public class AddOperationForm extends Base{
 		}
 	
 	protected void clickTranserCurrency (String Name){
-		clickByCss("OperationAdd_currencyTrans_chzn a");
+		clickByCss("#OperationAdd_currencyTrans_chzn a");
 		WebElement Account = null;
-		List<WebElement> accountsList = driver.findElements(By.cssSelector("OperationAdd_currencyTrans_chzn li"));
+		List<WebElement> accountsList = driver.findElements(By.cssSelector("#OperationAdd_currencyTrans_chzn li"));
 		for (WebElement el: accountsList){			
 			if (Name.equals(el.getText())){
 				Account = el;
 				String id = Account.getAttribute("id");
-				driver.findElement(By.cssSelector("OperationAdd_currencyTrans_chzn li[id="+id+"]")).click();		
+				driver.findElement(By.cssSelector("#OperationAdd_currencyTrans_chzn li[id="+id+"]")).click();		
 				break;
 				}
 			}

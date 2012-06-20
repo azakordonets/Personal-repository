@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.apache.bcel.verifier.statics.IntList;
 import org.homemoney.objects.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -90,6 +92,51 @@ public class TestControlPanel {
 			assertTrue(toFinalAccountSum - cp.convertStringToFloat(transferSum) == toInitialAccountSum);
 			assertTrue(fromInitialAccountSum - cp.convertStringToFloat(transferSum) ==  fromFinalAccountSum);
 			
+		}
+		
+		@Test @Ignore
+		public void addMultiCurrencyTransferOperation () throws InterruptedException{
+			String transferSumFrom = cp.generateNumberIntoString(1000);
+			String transferSumTo = cp.generateNumberIntoString(1000);
+			String fromAccount = "New account";
+			String toAccount = "Наличные деньги";
+			String fromCurrency = "UAH";
+			String toCurrency = "EUR";
+			Float fromInitialAccountSum = null;
+			Float toInitialAccountSum = null;
+			Float fromFinalAccountSum = null;
+			Float toFinalAccountSum = null;
+			fromInitialAccountSum = cp.getAccountBalanceValue(fromAccount, fromCurrency);
+			toInitialAccountSum = cp.getAccountBalanceValue(toAccount, toCurrency);
+			ops.addTransferOperation(fromAccount, toAccount, fromCurrency, toCurrency, transferSumFrom, transferSumTo, "19.06.2012", "another transfer test comment from: "+transferSumFrom+" to:"+transferSumTo+"", false);
+			Thread.sleep(3000);
+			fromFinalAccountSum = cp.getAccountBalanceValue(fromAccount, fromCurrency);
+			toFinalAccountSum = cp.getAccountBalanceValue(toAccount, toCurrency);
+			assertTrue(toFinalAccountSum - cp.convertStringToFloat(transferSumTo) == toInitialAccountSum);
+			assertTrue(fromInitialAccountSum - cp.convertStringToFloat(transferSumFrom) ==  fromFinalAccountSum);
+			
+		}
+		@Test
+		public void collapse(){
+			
+			List<WebElement> beforeAllAccounts = cp.driver.findElements(By.cssSelector("div[class=\"account\"]"));// list of all accounts		
+			int beforecounter = 0;
+			for (WebElement el: beforeAllAccounts){
+				if (el.findElement(By.cssSelector(".name.inv")).isDisplayed()){ //css for acount name
+					beforecounter++;
+				}
+			}
+			cp.getAccountCategoryElement("Наличные").click();
+			List<WebElement> afterAllAccounts = cp.driver.findElements(By.cssSelector("div[class=\"account\"]"));// list of all accounts		
+			int afterCounter = 0;
+			for (WebElement el: afterAllAccounts){
+				if (el.findElement(By.cssSelector(".name.inv")).isDisplayed()){ //css for acount name
+					afterCounter++;
+				}
+			}
+			
+			System.out.println("Before "+beforecounter);
+			System.out.println("After "+afterCounter);
 		}
 		
 		@After
