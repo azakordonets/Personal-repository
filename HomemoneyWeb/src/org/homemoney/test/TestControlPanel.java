@@ -35,7 +35,6 @@ public class TestControlPanel {
 		@Test @Ignore
 		public void checkAccountNameClick() throws Exception {
 			cp.clickByLinkText("New account");
-			System.out.println(cp);
 			assertEquals("New account",cp.getTextByCss("#account_view_filter_select_account_chzn > a.chzn-single > span"));
 		}
 		
@@ -45,17 +44,31 @@ public class TestControlPanel {
 		@Test @Ignore
 		public void addExpenceOperation () throws InterruptedException{	
 			String expence = cp.generateNumberIntoString(1000);
-			String account = "New account";
+			String account = "Наличные деньги";
 			String currency = "UAH";
 			Float initialAccountSum = null;
 			Float finalAccountSum = null;
 			initialAccountSum = cp.getAccountBalanceValue(account, currency);
-			ops.addExpenceOperation(account,currency,expence,"19.06.2012","Жилье","expence test comment "+expence+"",false);
+			ops.addExpenceOperation(account,currency,expence,cp.getCurrentDate(),"Жилье","expence test comment "+expence+"",false);
 			Thread.sleep(3000);
 			finalAccountSum = cp.getAccountBalanceValue(account, currency);
 			assertTrue(initialAccountSum - cp.convertStringToFloat(expence) == finalAccountSum);
-			
-			
+			cp.deleteAllOperationsInTodaysOperationsSection();	
+		}
+		
+		@Test @Ignore
+		public void addExpenceUsingSearchOperation () throws InterruptedException{	
+			String expence = cp.generateNumberIntoString(1000);
+			String account = "Наличные деньги";
+			String currency = "UAH";
+			Float initialAccountSum = null;
+			Float finalAccountSum = null;
+			initialAccountSum = cp.getAccountBalanceValue(account, currency);
+			ops.addExpenceUsingCategorySearchOperation(account,currency,expence,cp.getCurrentDate(),"Жилье","expence test comment "+expence+"",false);
+			Thread.sleep(3000);
+			finalAccountSum = cp.getAccountBalanceValue(account, currency);
+			assertTrue(initialAccountSum - cp.convertStringToFloat(expence) == finalAccountSum);
+			cp.deleteAllOperationsInTodaysOperationsSection();	
 		}
 		
 		@Test @Ignore
@@ -66,10 +79,11 @@ public class TestControlPanel {
 			Float initialAccountSum = null;
 			Float finalAccountSum = null;
 			initialAccountSum = cp.getAccountBalanceValue(account, currency);
-			ops.addIncomeOperation(account,currency,income,"19.06.2012","Зарплата","another income test comment"+income+"");
+			ops.addIncomeOperation(account,currency,income,cp.getCurrentDate(),"Зарплата","another income test comment"+income+"");
 			Thread.sleep(3000);
 			finalAccountSum = cp.getAccountBalanceValue(account, currency);
 			assertTrue(finalAccountSum - cp.convertStringToFloat(income) == initialAccountSum);
+			cp.deleteAllOperationsInTodaysOperationsSection();
 			
 		}
 		
@@ -85,12 +99,13 @@ public class TestControlPanel {
 			Float toFinalAccountSum = null;
 			fromInitialAccountSum = cp.getAccountBalanceValue(fromAccount, currency);
 			toInitialAccountSum = cp.getAccountBalanceValue(toAccount, currency);
-			ops.addTransferOperation(fromAccount, toAccount, currency, currency, transferSum, transferSum, "19.06.2012", "another transfer test comment"+transferSum+"", false);
+			ops.addTransferOperation(fromAccount, toAccount, currency, currency, transferSum, transferSum, cp.getCurrentDate(), "another transfer test comment"+transferSum+"", false);
 			Thread.sleep(3000);
 			fromFinalAccountSum = cp.getAccountBalanceValue(fromAccount, currency);
 			toFinalAccountSum = cp.getAccountBalanceValue(toAccount, currency);
 			assertTrue(toFinalAccountSum - cp.convertStringToFloat(transferSum) == toInitialAccountSum);
 			assertTrue(fromInitialAccountSum - cp.convertStringToFloat(transferSum) ==  fromFinalAccountSum);
+			cp.deleteAllOperationsInTodaysOperationsSection();
 			
 		}
 		
@@ -108,35 +123,34 @@ public class TestControlPanel {
 			Float toFinalAccountSum = null;
 			fromInitialAccountSum = cp.getAccountBalanceValue(fromAccount, fromCurrency);
 			toInitialAccountSum = cp.getAccountBalanceValue(toAccount, toCurrency);
-			ops.addTransferOperation(fromAccount, toAccount, fromCurrency, toCurrency, transferSumFrom, transferSumTo, "19.06.2012", "another transfer test comment from: "+transferSumFrom+" to:"+transferSumTo+"", false);
+			ops.addTransferOperation(fromAccount, toAccount, fromCurrency, toCurrency, transferSumFrom, transferSumTo, cp.getCurrentDate(), "another transfer test comment from: "+transferSumFrom+" to:"+transferSumTo+"", false);
 			Thread.sleep(3000);
 			fromFinalAccountSum = cp.getAccountBalanceValue(fromAccount, fromCurrency);
 			toFinalAccountSum = cp.getAccountBalanceValue(toAccount, toCurrency);
 			assertTrue(toFinalAccountSum - cp.convertStringToFloat(transferSumTo) == toInitialAccountSum);
 			assertTrue(fromInitialAccountSum - cp.convertStringToFloat(transferSumFrom) ==  fromFinalAccountSum);
+			cp.deleteAllOperationsInTodaysOperationsSection();
 			
 		}
-		@Test
-		public void collapse(){
+		@Test @Ignore
+		public void collapseAccountCategorySection(){
 			
-			List<WebElement> beforeAllAccounts = cp.driver.findElements(By.cssSelector("div[class=\"account\"]"));// list of all accounts		
-			int beforecounter = 0;
-			for (WebElement el: beforeAllAccounts){
-				if (el.findElement(By.cssSelector(".name.inv")).isDisplayed()){ //css for acount name
-					beforecounter++;
-				}
-			}
-			cp.getAccountCategoryElement("Наличные").click();
-			List<WebElement> afterAllAccounts = cp.driver.findElements(By.cssSelector("div[class=\"account\"]"));// list of all accounts		
-			int afterCounter = 0;
-			for (WebElement el: afterAllAccounts){
-				if (el.findElement(By.cssSelector(".name.inv")).isDisplayed()){ //css for acount name
-					afterCounter++;
-				}
-			}
+			int beforeClick = cp.getCountOfVisibleAccountsInCategorySections();
+			cp.clickAccountCategoryElement("Наличные");
+			int afterClick = cp.getCountOfVisibleAccountsInCategorySections();
+			assertTrue(beforeClick - afterClick == 1);
+		}
+		
+		@Test @Ignore
+		public void checkCategoryTotalBalance(){
+			assertEquals(cp.countFirstCategoryAccountsSumOfMoney(), cp.getFirstCategorieTotalSumValue(),0.05);
+		}
+		
+		@Test @Ignore
+		public void checkTodaysOperations() throws InterruptedException{
+			cp.waitUntilTodaysTransactionsIsNotLoaded();
 			
-			System.out.println("Before "+beforecounter);
-			System.out.println("After "+afterCounter);
+			
 		}
 		
 		@After

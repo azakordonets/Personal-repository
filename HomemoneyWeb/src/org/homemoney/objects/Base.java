@@ -1,5 +1,10 @@
 package org.homemoney.objects;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
@@ -100,9 +105,27 @@ public class Base {
 		driver.findElement(By.id(id)).sendKeys(key);
 	}
 	
+	public void sendKeyByCss (String css, String key){
+		driver.findElement(By.cssSelector(css)).sendKeys(key);
+	}
+	
+	public void sendEnterKeyByCss (String css){
+		driver.findElement(By.cssSelector(css)).sendKeys(Keys.RETURN);
+	}
+	
 	public String findStringById (String id){
 		String element = driver.findElement(By.id(id)).getText();
 		return element;
+	}
+	
+	public List<WebElement> findElementsByCss(String css){
+		List<WebElement> result = driver.findElements(By.cssSelector(css));
+		return result;
+	}
+	
+	public WebElement findElementByCss(String css){
+		WebElement result = driver.findElement(By.cssSelector(css));
+		return result;
 	}
 	
 	public boolean isElementSelectedById(String id){
@@ -119,6 +142,8 @@ public class Base {
 		boolean state = driver.findElement(By.cssSelector(css)).isDisplayed();
 		return state;
 	}
+	
+	
 	
 	private boolean isElementPresent(WebDriver driver, By by){
 		  try{
@@ -165,6 +190,14 @@ public class Base {
 		int randomInt = randomGenerator.nextInt(number);
 		String result = Integer.toString(randomInt);
 		return result;
+	}
+	
+	public String getCurrentDate() {
+		Calendar currentDate = Calendar.getInstance();
+		  SimpleDateFormat formatter= 
+		  new SimpleDateFormat("MM/dd/yyyy");
+		  String dateNow = formatter.format(currentDate.getTime());
+		 return dateNow;
 	}
 	
 	public float convertStringToFloat(String string){

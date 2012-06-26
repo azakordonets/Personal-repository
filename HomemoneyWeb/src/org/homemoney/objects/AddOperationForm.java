@@ -2,8 +2,10 @@ package org.homemoney.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.selenesedriver.IsElementSelected;
 
@@ -12,12 +14,12 @@ public class AddOperationForm extends Base{
 	protected void clickAccount (String Name){
 		clickByCss("#OperationAdd_account_chzn a");
 		WebElement Account = null;
-		List<WebElement> accountsList = driver.findElements(By.cssSelector("#OperationAdd_account_chzn li"));
+		List<WebElement> accountsList = findElementsByCss("#OperationAdd_account_chzn li");
 		for (WebElement el: accountsList){			
 			if (Name.equals(el.getText())){
 				Account = el;
 				String id = Account.getAttribute("id");
-				driver.findElement(By.cssSelector("#OperationAdd_account_chzn li[id="+id+"]")).click();		
+				clickByCss("#OperationAdd_account_chzn li[id="+id+"]");
 				break;
 				}
 			}
@@ -26,12 +28,12 @@ public class AddOperationForm extends Base{
 	protected void clickTransferAccount (String Name){
 		clickByCss("#OperationAdd_accountTrans_chzn a");
 		WebElement Account = null;
-		List<WebElement> accountsList = driver.findElements(By.cssSelector("#OperationAdd_accountTrans_chzn li"));
+		List<WebElement> accountsList = findElementsByCss("#OperationAdd_accountTrans_chzn li");
 		for (WebElement el: accountsList){			
 			if (Name.equals(el.getText())){
 				Account = el;
 				String id = Account.getAttribute("id");
-				driver.findElement(By.cssSelector("#OperationAdd_accountTrans_chzn li[id="+id+"]")).click();		
+				clickByCss("#OperationAdd_accountTrans_chzn li[id="+id+"]");
 				break;
 				}
 			}
@@ -40,12 +42,12 @@ public class AddOperationForm extends Base{
 	protected void clickCurrency (String Name){
 		clickByCss("#OperationAdd_currency_chzn a");
 		WebElement Account = null;
-		List<WebElement> accountsList = driver.findElements(By.cssSelector("#OperationAdd_currency_chzn li"));
+		List<WebElement> accountsList = findElementsByCss("#OperationAdd_currency_chzn li");
 		for (WebElement el: accountsList){			
 			if (Name.equals(el.getText())){
 				Account = el;
 				String id = Account.getAttribute("id");
-				driver.findElement(By.cssSelector("#OperationAdd_currency_chzn li[id="+id+"]")).click();		
+				clickByCss("#OperationAdd_currency_chzn li[id="+id+"]");
 				break;
 				}
 			}
@@ -54,12 +56,12 @@ public class AddOperationForm extends Base{
 	protected void clickTranserCurrency (String Name){
 		clickByCss("#OperationAdd_currencyTrans_chzn a");
 		WebElement Account = null;
-		List<WebElement> accountsList = driver.findElements(By.cssSelector("#OperationAdd_currencyTrans_chzn li"));
+		List<WebElement> accountsList = findElementsByCss("#OperationAdd_currencyTrans_chzn li");
 		for (WebElement el: accountsList){			
 			if (Name.equals(el.getText())){
 				Account = el;
 				String id = Account.getAttribute("id");
-				driver.findElement(By.cssSelector("#OperationAdd_currencyTrans_chzn li[id="+id+"]")).click();		
+				clickByCss("#OperationAdd_currencyTrans_chzn li[id="+id+"]");
 				break;
 				}
 			}
@@ -87,12 +89,12 @@ public class AddOperationForm extends Base{
 	protected void clickExpenceCategory (String Name){
 		clickByCss("#OperationAdd_categoryExp_chzn a");
 		WebElement Account = null;
-		List<WebElement> accountsList = driver.findElements(By.cssSelector("#OperationAdd_categoryExp_chzn li"));
+		List<WebElement> accountsList = findElementsByCss("#OperationAdd_categoryExp_chzn li");
 		for (WebElement el: accountsList){			
 			if (Name.equals(el.getText())){
 				Account = el;
 				String id = Account.getAttribute("id");
-				driver.findElement(By.cssSelector("#OperationAdd_categoryExp_chzn li[id="+id+"]")).click();		
+				clickByCss("#OperationAdd_categoryExp_chzn li[id="+id+"]");
 				break;
 				}
 			}
@@ -101,12 +103,12 @@ public class AddOperationForm extends Base{
 	protected void clickIncomeCategory (String Name){
 		clickByCss("#OperationAdd_categoryInc_chzn a");
 		WebElement Account = null;
-		List<WebElement> accountsList = driver.findElements(By.cssSelector("#OperationAdd_categoryInc_chzn li"));
+		List<WebElement> accountsList = findElementsByCss("#OperationAdd_categoryInc_chzn li");
 		for (WebElement el: accountsList){			
 			if (Name.equals(el.getText())){
 				Account = el;
 				String id = Account.getAttribute("id");
-				driver.findElement(By.cssSelector("#OperationAdd_categoryInc_chzn li[id="+id+"]")).click();		
+				clickByCss("#OperationAdd_categoryInc_chzn li[id="+id+"]");
 				break;
 				}
 			}
@@ -115,6 +117,13 @@ public class AddOperationForm extends Base{
 	protected void enterComment(String comment){
 		clickById("OperationAdd_description");
 		sendKeyById("OperationAdd_description", comment);
+	}
+	
+	public void clickCategoryBySearch(String name){
+		clickByCss("#OperationAdd_categoryExp_chzn a");
+		sendKeyByCss("#OperationAdd_categoryExp_chzn .chzn-search input", name);
+		sendEnterKeyByCss("#OperationAdd_categoryExp_chzn .chzn-search input");
+			
 	}
 	
 	protected void clickPlanButton(){
@@ -156,6 +165,18 @@ public class AddOperationForm extends Base{
 		enterSum(sum);
 		enterDate(date);
 		clickExpenceCategory(category);
+		enterComment(comment);
+		setPlanOption(plan);
+		clickAddButton();
+		
+	}
+	
+	public void addExpenceUsingCategorySearchOperation(String account, String currency, String sum, String date, String category, String comment, boolean plan) {
+		clickAccount(account);
+		clickCurrency(currency);
+		enterSum(sum);
+		enterDate(date);
+		clickCategoryBySearch(category);
 		enterComment(comment);
 		setPlanOption(plan);
 		clickAddButton();
