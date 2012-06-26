@@ -25,6 +25,13 @@ public class AddOperationForm extends Base{
 			}
 		}
 	
+	protected void clickAccountBySearch(String name){
+		clickByCss("#OperationAdd_account_chzn a");
+		sendKeyByCss("#OperationAdd_account_chzn .chzn-search input", name);
+		sendEnterKeyByCss("#OperationAdd_account_chzn .chzn-search input");
+			
+	}
+
 	protected void clickTransferAccount (String Name){
 		clickByCss("#OperationAdd_accountTrans_chzn a");
 		WebElement Account = null;
@@ -37,6 +44,12 @@ public class AddOperationForm extends Base{
 				break;
 				}
 			}
+		}
+	
+	protected void clickTransferAccountBySearch (String Name){
+		clickByCss("#OperationAdd_accountTrans_chzn a");
+		sendKeyByCss("#OperationAdd_accountTrans_chzn .chzn-search input", Name);
+		sendEnterKeyByCss("#OperationAdd_accountTrans_chzn .chzn-search input");
 		}
 	
 	protected void clickCurrency (String Name){
@@ -100,6 +113,13 @@ public class AddOperationForm extends Base{
 			}
 		}
 	
+	protected void clickCategoryBySearch(String name){
+		clickByCss("#OperationAdd_categoryExp_chzn a");
+		sendKeyByCss("#OperationAdd_account_chzn .chzn-search input", name);
+		sendEnterKeyByCss("#OperationAdd_account_chzn .chzn-search input");
+			
+	}
+
 	protected void clickIncomeCategory (String Name){
 		clickByCss("#OperationAdd_categoryInc_chzn a");
 		WebElement Account = null;
@@ -114,16 +134,10 @@ public class AddOperationForm extends Base{
 			}
 		}
 	
+	
 	protected void enterComment(String comment){
 		clickById("OperationAdd_description");
 		sendKeyById("OperationAdd_description", comment);
-	}
-	
-	public void clickCategoryBySearch(String name){
-		clickByCss("#OperationAdd_categoryExp_chzn a");
-		sendKeyByCss("#OperationAdd_categoryExp_chzn .chzn-search input", name);
-		sendEnterKeyByCss("#OperationAdd_categoryExp_chzn .chzn-search input");
-			
 	}
 	
 	protected void clickPlanButton(){
@@ -199,9 +213,38 @@ public class AddOperationForm extends Base{
 		
 	}
 	
-	public void addIncomeOperation(String account, String currency, String sum, String date, String category, String comment) {
+	public void addTransferOperationUsingSearch(String account, String transferAccount, String currency, String transferCurrency,  String sum, String transferSum, String date,String comment, boolean plan) {
+		clickTransferTab();
+		clickAccountBySearch(account);
+		clickCurrency(currency);
+		enterSum(sum);
+		clickTransferAccountBySearch(transferAccount);
+		if (!currency.equals(transferCurrency)){
+		clickTranserCurrency(transferCurrency);
+		enterTransferSum(transferSum);
+		}
+		enterDate(date);
+		enterComment(comment);
+		clickAddButton();
+		
+	}
+	
+	public void addIncomeOperation(String account, String currency, String sum, String date, String category, String comment) throws InterruptedException {
 		clickIncomeTab();
+		Thread.sleep(1000);
 		clickAccount(account);
+		clickCurrency(currency);
+		enterSum(sum);
+		enterDate(date);
+		clickIncomeCategory(category);
+		enterComment(comment);
+		clickAddButton();
+		
+	}
+	
+	public void addIncomeOperationUsingSearch(String account, String currency, String sum, String date, String category, String comment) {
+		clickIncomeTab();
+		clickAccountBySearch(account);
 		clickCurrency(currency);
 		enterSum(sum);
 		enterDate(date);

@@ -57,7 +57,7 @@ public class TestControlPanel {
 		}
 		
 		@Test @Ignore
-		public void addExpenceUsingSearchOperation () throws InterruptedException{	
+		public void addExpenceOperationUsingSearch () throws InterruptedException{	
 			String expence = cp.generateNumberIntoString(1000);
 			String account = "Наличные деньги";
 			String currency = "UAH";
@@ -88,6 +88,22 @@ public class TestControlPanel {
 		}
 		
 		@Test @Ignore
+		public void addIncomeOperationUsingSearch () throws InterruptedException{
+			String income = cp.generateNumberIntoString(1000);
+			String account = "New account";
+			String currency = "UAH";
+			Float initialAccountSum = null;
+			Float finalAccountSum = null;
+			initialAccountSum = cp.getAccountBalanceValue(account, currency);
+			ops.addIncomeOperationUsingSearch(account,currency,income,cp.getCurrentDate(),"Зарплата","another income test comment"+income+"");
+			Thread.sleep(3000);
+			finalAccountSum = cp.getAccountBalanceValue(account, currency);
+			assertTrue(finalAccountSum - cp.convertStringToFloat(income) == initialAccountSum);
+			cp.deleteAllOperationsInTodaysOperationsSection();
+			
+		}
+		
+		@Test @Ignore
 		public void addTransferOperation () throws InterruptedException{
 			String transferSum = cp.generateNumberIntoString(1000);
 			String fromAccount = "Наличные деньги";
@@ -100,6 +116,28 @@ public class TestControlPanel {
 			fromInitialAccountSum = cp.getAccountBalanceValue(fromAccount, currency);
 			toInitialAccountSum = cp.getAccountBalanceValue(toAccount, currency);
 			ops.addTransferOperation(fromAccount, toAccount, currency, currency, transferSum, transferSum, cp.getCurrentDate(), "another transfer test comment"+transferSum+"", false);
+			Thread.sleep(3000);
+			fromFinalAccountSum = cp.getAccountBalanceValue(fromAccount, currency);
+			toFinalAccountSum = cp.getAccountBalanceValue(toAccount, currency);
+			assertTrue(toFinalAccountSum - cp.convertStringToFloat(transferSum) == toInitialAccountSum);
+			assertTrue(fromInitialAccountSum - cp.convertStringToFloat(transferSum) ==  fromFinalAccountSum);
+			cp.deleteAllOperationsInTodaysOperationsSection();
+			
+		}
+		
+		@Test @Ignore
+		public void addTransferOperationUsingSearch () throws InterruptedException{
+			String transferSum = cp.generateNumberIntoString(1000);
+			String fromAccount = "Наличные деньги";
+			String toAccount = "New account";
+			String currency = "UAH";
+			Float fromInitialAccountSum = null;
+			Float toInitialAccountSum = null;
+			Float fromFinalAccountSum = null;
+			Float toFinalAccountSum = null;
+			fromInitialAccountSum = cp.getAccountBalanceValue(fromAccount, currency);
+			toInitialAccountSum = cp.getAccountBalanceValue(toAccount, currency);
+			ops.addTransferOperationUsingSearch(fromAccount, toAccount, currency, currency, transferSum, transferSum, cp.getCurrentDate(), "another transfer test comment"+transferSum+"", false);
 			Thread.sleep(3000);
 			fromFinalAccountSum = cp.getAccountBalanceValue(fromAccount, currency);
 			toFinalAccountSum = cp.getAccountBalanceValue(toAccount, currency);
@@ -124,6 +162,30 @@ public class TestControlPanel {
 			fromInitialAccountSum = cp.getAccountBalanceValue(fromAccount, fromCurrency);
 			toInitialAccountSum = cp.getAccountBalanceValue(toAccount, toCurrency);
 			ops.addTransferOperation(fromAccount, toAccount, fromCurrency, toCurrency, transferSumFrom, transferSumTo, cp.getCurrentDate(), "another transfer test comment from: "+transferSumFrom+" to:"+transferSumTo+"", false);
+			Thread.sleep(3000);
+			fromFinalAccountSum = cp.getAccountBalanceValue(fromAccount, fromCurrency);
+			toFinalAccountSum = cp.getAccountBalanceValue(toAccount, toCurrency);
+			assertTrue(toFinalAccountSum - cp.convertStringToFloat(transferSumTo) == toInitialAccountSum);
+			assertTrue(fromInitialAccountSum - cp.convertStringToFloat(transferSumFrom) ==  fromFinalAccountSum);
+			cp.deleteAllOperationsInTodaysOperationsSection();
+			
+		}
+		
+		@Test @Ignore
+		public void addMultiCurrencyTransferOperationUsingSearch () throws InterruptedException{
+			String transferSumFrom = cp.generateNumberIntoString(1000);
+			String transferSumTo = cp.generateNumberIntoString(1000);
+			String fromAccount = "New account";
+			String toAccount = "Наличные деньги";
+			String fromCurrency = "UAH";
+			String toCurrency = "EUR";
+			Float fromInitialAccountSum = null;
+			Float toInitialAccountSum = null;
+			Float fromFinalAccountSum = null;
+			Float toFinalAccountSum = null;
+			fromInitialAccountSum = cp.getAccountBalanceValue(fromAccount, fromCurrency);
+			toInitialAccountSum = cp.getAccountBalanceValue(toAccount, toCurrency);
+			ops.addTransferOperationUsingSearch(fromAccount, toAccount, fromCurrency, toCurrency, transferSumFrom, transferSumTo, cp.getCurrentDate(), "another transfer test comment from: "+transferSumFrom+" to:"+transferSumTo+"", false);
 			Thread.sleep(3000);
 			fromFinalAccountSum = cp.getAccountBalanceValue(fromAccount, fromCurrency);
 			toFinalAccountSum = cp.getAccountBalanceValue(toAccount, toCurrency);
