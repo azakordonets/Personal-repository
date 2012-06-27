@@ -128,8 +128,18 @@ public class Base {
 		return result;
 	}
 	
+	public WebElement findElementByLinkText(String text){
+		WebElement result = driver.findElement(By.linkText(text));
+		return result;
+	}
+	
 	public boolean isElementSelectedById(String id){
 		boolean state = driver.findElement(By.id(id)).isSelected();
+		return state;
+	}
+	
+	public boolean isElementSelectedByCss(String css){
+		boolean state = driver.findElement(By.cssSelector(css)).isSelected();
 		return state;
 	}
 	

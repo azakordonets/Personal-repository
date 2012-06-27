@@ -185,6 +185,9 @@ protected List<String> getAccountDetails(String AccName) {
 		clickByCss("a[rel=\"template\"]");
 	}
 	
+	public void clickControlPanelSetupLink(){
+		clickByCss(" a[href=\"/app/AccountSettings.aspx\"]");
+	}
 	
 	
 	}
