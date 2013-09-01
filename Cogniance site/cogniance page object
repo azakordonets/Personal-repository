@@ -4,8 +4,8 @@ require "test/unit"
 
 Class Home
 
-def self.getHome("URL")
-  @driver.get URL
+def self.getHome(url)
+  @driver.get url
 end
 
 
@@ -30,4 +30,4 @@ end
     @driver.find_element(:css, "li.news > a > span").click
     @driver.find_element(:css, "li.careers > a > span").click
     @driver.find_element(:xpath, "//div[2]/div/div/ul/li[2]/a/span").click
-  end
+

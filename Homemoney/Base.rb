@@ -13,10 +13,6 @@ class Utils < Test::Unit::TestCase
    #list of locators variables
   @base_url =   "http://dev.homemoney.com.ua/"
   @logout_button_locator = "ctl00_ctl00_Top_LV2_LoginStatus2"
-  @sign_in_button_locator = "login-nav-signin"
-  @login_edit_field_locator = "ctl00_Main_rl1_hmLogin_login"
-  @password_edit_field_locator = "ctl00_Main_rl1_hmLogin_password"
-  @login_button_locator = "ctl00_Main_rl1_hmLogin_LoginButton"
   @total_sum_edit_field_locator = "ctl00_ctl00_Main_Main_opEdit_txtTotal"
   @description_edit_field_locator = "ctl00_ctl00_Main_Main_opEdit_txtDescription"
   @date_button_locator = "ctl00_ctl00_Main_Main_opEdit_ImgTransBtnCalendar"
@@ -31,8 +27,8 @@ def self.idClick (id)
     @driver.find_element(:id, id).click
 end
 
-  def self.idSelectByText (id,text)
-      @driver.find_element(:id, id).select_by(:text, text)
+  def self.SelectElementByIdAndText (id,text)
+    Selenium::WebDriver::Support::Select.new(@driver.find_element(:id, id)).select_by(:text,text)
 
 def self.linkClick (link)
     @driver.find_element(:link, link).click
@@ -63,6 +59,7 @@ def self.sendKeys (element_id,key_to_send)
     @driver.find_element(:id, element_id).send_keys key_to_send
 end
 
+
 def self.logout ()
     @driver.find_element(:id, @logout_button_locator).click
 end
@@ -86,16 +83,15 @@ end
   end
 
 def select_account(account_name)
-  #Selenium::WebDriver::Support::Select.new(@driver.find_element(:id, )).select_by(:text, account_name)
-  Selenium::WebDriver::Support::Select.new(Utils.idSelectByText(@account_drop_down_locator,account_name))
+  Utils.SelectElementByIdAndText(@account_drop_down_locator, account_name)
 end
 
   def select_category(category_name)
-    @driver = Selenium::WebDriver::Support::Select.new(@driver.find_element(:id, @category_drop_down_locator)).select_by(:text,category_name)
+    Utils.SelectElementByIdAndText(@category_drop_down_locator, category_name)
   end
 
   def select_currency (currency)
-    @driver = Selenium::WebDriver::Support::Select.new(@driver.find_element(:id, @currency_drop_down_locator)).select_by(:text, currency)
+    Utils.SelectElementByIdAndText(@currency_drop_down_locator, currency)
   end
 
 

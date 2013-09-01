@@ -15,7 +15,6 @@ class Operations < Base::Utils
     @date = date
   end
   def add_operation
-   #@driver =  Selenium::WebDriver::Support::Select.new(@driver.find_element(:id, "ctl00_ctl00_Main_Main_opEdit_ddlAccount")).select_by(:text, "Наличные деньги")
    select_account(@account)
    enter_sum(@sum)
    select_currency(@currency)
